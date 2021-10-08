@@ -46,3 +46,11 @@ class BallWindow:
             int: dimension
         """
         return len(self.center)
+
+
+
+
+class UnitBallWindow(BallWindow):
+    def __init__(self, center):
+
+        super().__init__(center, raduis=1)

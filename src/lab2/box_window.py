@@ -2,7 +2,7 @@ from lab2.utils import get_random_number_generator
 
 
 class BoxWindow:
-    """[summary]"""
+    """class BoxWindow contains boxes witch defend with intervals"""
 
     def __init__(self, bounds):
         """initialization
