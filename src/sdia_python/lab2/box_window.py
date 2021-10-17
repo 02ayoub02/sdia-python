@@ -1,4 +1,5 @@
 from sdia_python.lab2.utils import get_random_number_generator
+import numpy as np
 
 
 class BoxWindow:
@@ -8,9 +9,17 @@ class BoxWindow:
         """initialization
 
         Args:
-            bounds (list): return BoxWindow of the intervals of list
+            bounds (array): return BoxWindow of the intervals of array
         """
-        self.bounds = bounds
+        # Change the array to array for more computationally efficient operations
+
+        try:
+            assert False not in (bounds[:, 1] > bounds[:, 0])
+        except:
+            print(
+                "Please choose bounds such that it contains intervals of the form [a,b] with b > a"
+            )
+        self.bounds = np.array(bounds)
 
     def __str__(self):
         r"""BoxWindow: :math:`[a_1, b_1] \times [a_2, b_2] \times \cdots`
@@ -26,7 +35,7 @@ class BoxWindow:
         return dd
 
     def __len__(self):
-        """return number of points
+        """Takes an instance of BoxWindow class and returns number of points
 
         Returns:
             int: number of points
@@ -37,15 +46,14 @@ class BoxWindow:
         """returns true if point contains in super box
 
         Args:
-            point (list): list of point's coordinates
+            point (array): a array containing the point's coordinates
 
         Returns:
             bool: returns true if point contains in the box
         """
-        for i in range(len(self.bounds)):
-            if point[i] < self.bounds[i][0] or point[i] > self.bounds[i][1]:
-                return False
-        return True
+        return True not in np.concatenate(
+            (point < self.bounds[:, 0], point > self.bounds[:, 1]), axis=0
+        )
 
     def dimension(self):
         """return the dimension of the box
@@ -61,16 +69,14 @@ class BoxWindow:
         Returns:
             float: the volume of the box
         """
-        p = 1
-        for i in range(len(self.bounds)):
-            p *= self.bounds[i][1] - self.bounds[i][0]
-        return p
+
+        return np.prod(self.bounds[:, 1] - self.bounds[:, 0])
 
     def indicator_function(self, points):
-        """ list of true if the each point in points in the Box
+        """ array of true if the each point in points in the Box
 
         Args:
-            args (list): list of bool
+            args (array): array of bool
         """
         l = []
         for x in points:
@@ -114,24 +120,32 @@ class BoxWindow:
         return points
 
     def center(self):
-        """ return a the center of the box as list
+        """ return a the center of the box as array
 
         Returns:
-            [list]: [center of box]
+            [array]: [center of box]
         """
-        centre = []
-        for x in self.bounds:
-            centre.append((x[1] + x[0]) / 2)
-        return centre
+
+        return np.mean(self.bounds, axis=1)
 
 
 class UnitBoxWindow(BoxWindow):
-    def __init__(self, center, dimension):
-        """ initialization
+    def __init__(self, dimension, center=None):
+        """ initialization of a unit box window
+                from a list of centers
 
         Args:
             dimension (int): dimension of the box
-            center (list, optional): the center of the box. Defaults to None.
+            center (array, optional): the center of the box. Defaults to None, and if that is the case we initialize centers as zeros.
         """
-        bounds = [[center[i] - 0.5, center[i] + 0.5] for i in range(dimension)]
+        if center == None:
+            center = np.zeros((dimension,))
+        else:
+            try:
+                assert len(center) == dimension
+            except:
+                print("center of length different than dimension")
+
+        bounds = np.concatenate((center - 0.5, center + 0.5), axis=1)
+        # bounds = [[center[i] - 0.5, center[i] + 0.5] for i in range(dimension)]
         super().__init__(bounds)
