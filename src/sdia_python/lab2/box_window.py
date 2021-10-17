@@ -3,7 +3,7 @@ import numpy as np
 
 
 class BoxWindow:
-    """class BoxWindow contains boxes witch defend with intervals"""
+    """class BoxWindow contains boxes  defined by intervals"""
 
     def __init__(self, bounds):
         """initialization

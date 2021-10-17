@@ -1,16 +1,25 @@
 def is_unique(x):
-    """[ez]
+    """verify that all elemens of list are not repeated
 
     Args:
-        x ([type]): [description]
+        x (list): list of elements
 
     Returns:
-        [type]: [description]
+        bool: True if all elemens of list are not repeated
+
     """
     return len(x) == len(set(x))
 
 
 def triangle_shape(height):
+    """return a triangle of x
+
+    Args:
+        height (int): number of stages
+
+    Returns:
+        str: triangle
+    """
     s = "x"
     esp = " "
     if height == 0:

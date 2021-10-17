@@ -2,6 +2,7 @@ import numpy as np
 from math import gamma
 
 class BallWindow:
+    """class BallWindow contains balls defined by centers and radius"""
     def __init__(self, center, R):
         """initialization
 
